@@ -34,13 +34,12 @@
     function preload ()
     {
 
-        this.load.spritesheet('gorgina', 'assets/gorgina_spritesheet.png', {frameWidth: 90, frameHeight: 166});
-
-        //this.load.setBaseURL('http://labs.phaser.io');
+        this.load.spritesheet('gorgina_idle_right', 'assets/gorgina_idle_right.png', {frameWidth: 90, frameHeight: 166});
+        this.load.spritesheet('gorgina_idle_left', 'assets/gorgina_idle_left.png', {frameWidth: 90, frameHeight: 166});
+        this.load.spritesheet('gorgina_walk_right', 'assets/gorgina_walk_right.png', {frameWidth: 90, frameHeight: 166});
+        this.load.spritesheet('gorgina_walk_left', 'assets/gorgina_walk_left.png', {frameWidth: 90, frameHeight: 166});
 
         this.load.image('sky', 'assets/sky.png');
-        //this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        //this.load.image('red', 'assets/particles/red.png');
 
 
     }
@@ -48,34 +47,49 @@
     function create ()
     {
         this.add.image(400, 300, 'sky');
-
-        //var particles = this.add.particles('red');
-
-        /*var emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });*/
-
-        //var logo = this.physics.add.image(400, 100, 'logo');
-
-        player = this.physics.add.sprite(100, 450, 'gorgina');
-
+       
         player.setCollideWorldBounds(true);
         player.setBounce(0.2);
 
+        player = this.physics.add.sprite(100, 450, 'gorgina_idle_right');
+
         this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('gorgina', {start: 0, end: 7}),
+            key: 'idle_right',
+            frames: this.anims.generateFrameNumbers('gorgina_idle_right', {start: 0, end: 7}),
             frameRate: 10,
             repeat: -1
         });
 
-        //player.setVelocity(100, 200);
+        player = this.physics.add.sprite(100, 450, 'gorgina_idle_left');
+
+        this.anims.create({
+            key: 'idle_left',
+            frames: this.anims.generateFrameNumbers('gorgina_idle_left', {start: 0, end: 7}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        player = this.physics.add.sprite(100, 450, 'gorgina_walk_right');
+
+        this.anims.create({
+            key: 'walk_right',
+            frames: this.anims.generateFrameNumbers('gorgina_walk_right', {start: 0, end: 7}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        player = this.physics.add.sprite(100, 450, 'gorgina_walk_left');
+
+        this.anims.create({
+            key: 'walk_left',
+            frames: this.anims.generateFrameNumbers('gorgina_walk_left', {start: 0, end: 7}),
+            frameRate: 10,
+            repeat: -1
+        });
+
 
         cursors = this.keyboard.createCursorKeys();
 
-        //emitter.startFollow(logo);
     }
 
     function update ()
@@ -83,13 +97,19 @@
         if (cursors.left.isDown)
         {
             player.setVelocityX(-160);
+            player.anims.play('walk_left', true);
         }
-        if (cursors.right.isDown)
+        else if (cursors.right.isDown)
         {
             player.setVelocityX(160);
+            player.anims.play('walk_right', true);
         }
-        player.anims.play('idle', true);
+        else
+        { 
+            player.anims.play('idle_right', true);
+        }
     }
+    
     </script>
 
 </body>
